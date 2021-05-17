@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: archnav-deployment
+  labels:
+    app: archnav
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: archnav
+  template:
+    metadata:
+      labels:
+        app: archnav
+    spec:
+      containers:
+      - name: archnav
+        image: 741927926526.dkr.ecr.us-west-2.amazonaws.com/archnav:latest
+        ports:
+        - containerPort: 9999
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: archnav-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: archnav
+  ports:
+    - protocol: TCP
+      port: 9999
+      targetPort: 9999
+      nodePort: 30000
